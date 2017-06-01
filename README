@@ -1,6 +1,4 @@
 Philip Newman
-CS 655 : PA6
-Write-up for PA6 (Code generator, part 1)
 
 The task of this program is to prepare the data segment with
 protObjs, dispatch tables and constant objects. 
