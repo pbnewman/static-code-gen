@@ -2,11 +2,11 @@ Philip Newman
 CS 655 : PA6
 Write-up for PA6 (Code generator, part 1)
 
-The task of this assignment is preparing the data segment with
+The task of this program is to prepare the data segment with
 protObjs, dispatch tables and constant objects. 
 
 Due to the very nature of the data segment my approach was to
-remain very iterative. The assignment sheet made this clear.
+remain very iterative. 
 
 Complex code has been heavily commented to help you get through it.
 
@@ -70,7 +70,7 @@ useful here and felt it may be more flexible to leave the work
 up to an entirely dedicated class which would then allow me to 
 retrieve the tables as Hashtables after completing the build.
 
-Probably the most straightforward task of this assignment.
+Probably the most straightforward task of this program.
 
 ####################################
 Emitting
