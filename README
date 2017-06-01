@@ -1,0 +1,93 @@
+Philip Newman
+CS 655 : PA6
+Write-up for PA6 (Code generator, part 1)
+
+The task of this assignment is preparing the data segment with
+protObjs, dispatch tables and constant objects. 
+
+Due to the very nature of the data segment my approach was to
+remain very iterative. The assignment sheet made this clear.
+
+Complex code has been heavily commented to help you get through it.
+
+####################################
+CodeInfoTable and ClassInfo
+####################################
+
+These are the data centers of the program and are used to hold
+data from the AST in a representation that makes inheritance
+oriented traversals easy. Many of the traversals in PA6 will
+use this network of ClassInfo objects to emit code.
+
+The ClassInfoTable is in charge of ClassInfo objects. In fact,
+they are stored within the same ArrayAny as feature offsets.
+
+####################################
+Class Tags and Inheritance Hierarchy
+####################################
+
+Class tags needed to be assigned in a preorder fashion from root
+starting at 0. I knew that I needed to capture the inheritance 
+in the form of an inheritance graph which would allow for DFS. 
+
+I used the same structure from the PA5 solution to create 
+my inheritance structure (linking ClassInfos together).
+Once this was done, assigning class tags was reduced to a 
+solution involving one recursive method. In fact, this 
+would be the solution to many of the traversals needed a 
+bit later.
+
+Using ClassInfo allows me to encapsulate any data that I use
+throughout that program that would be helpful for future use.
+One such example is the very primitive linked list within 
+ClassInfo, this will be discussed in the feature offsets section.
+
+
+####################################
+Feature Offsets
+####################################
+
+Used to assign offsets to methods and attributes of every 
+class, while aslo adhering to inheritance shared features.
+As with class tags, a recursive method allowing preorder DFS
+over the ClassInfo hierarchy made quick work of this.
+
+This step also creates a linked list of the methods in each
+class, this is then used when emitting dispatch tables!
+
+Originally I created MethodInfo and AttrInfo classes which
+shared a common parent class with ClassInfo, Info. However,
+after a short while I concluded that in fact only the offset
+was necessary here.
+
+####################################
+Literal Tables
+####################################
+
+I built my literal tables with a helper class named 
+LiteralTableBuilder. I saw the visitor design pattern as being
+useful here and felt it may be more flexible to leave the work
+up to an entirely dedicated class which would then allow me to 
+retrieve the tables as Hashtables after completing the build.
+
+Probably the most straightforward task of this assignment.
+
+####################################
+Emitting
+####################################
+
+After having collected all of this information from the tree
+we are ready to emit. Literal tables are handled in an 
+imperative manner due to ease of use of Enumerations.
+
+After literals the class name table is emitted. This uses 
+class tags assigned at the beginning of the program. 
+
+Then dispatch tables and protObjs for every class. Both the
+class name table and disp/protObj tables used DFS traversal 
+starting from root (Any) and traversing the network of ClassInfo.
+
+On the surface this works, but is a little sloppy. This sloppiness
+starts to show itself when I need to start passing things as params
+just so I can refer to things which it encapsulates in the new scope.
+
